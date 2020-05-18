@@ -1,12 +1,7 @@
 node_modules
-build
-reports
-screenshots
-tests/coverage
-.nyc_output
+coverage
+npm-debug.log
 .DS_Store
-
-junitfvt.xml
-chromedriver.log
-tests/coverage-summary.json
-mochatest.json
+.env
+.idea/*
+.project

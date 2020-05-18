@@ -1,68 +1,148 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center" style="border-bottom: none;">🚀 Personality Insights Sample Application</h1>
+<h3 align="center">This Node.js app demonstrates how to analyze text and tweets using Personality Insights.</h3>
+<p align="center">
+  <a href="http://travis-ci.org/watson-developer-cloud/personality-insights-nodejs">
+    <img alt="Travis" src="https://travis-ci.org/watson-developer-cloud/personality-insights-nodejs.svg?branch=master">
+  </a>
+  <a href="#badge">
+    <img alt="semantic-release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
+  </a>
+</p>
+</p>
 
-## Available Scripts
+The IBM Watson [Personality Insights][service_url] service uses linguistic analysis to extract cognitive and social characteristics from input text such as email, text messages, tweets, forum posts, and more. By deriving cognitive and social preferences, the service helps users to understand, connect to, and communicate with other people on a more personalized level.
 
-In the project directory, you can run:
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Sign up for an [IBM Cloud account](https://cloud.ibm.com/registration/).
+1. Download the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/index.html#overview).
+1. Create an instance of the Personality Insights service and get your credentials:
+    - Go to the [Personality Insights](https://cloud.ibm.com/catalog/services/personality-insights) page in the IBM Cloud Catalog.
+    - Log in to your IBM Cloud account.
+    - Click **Create**.
+    - Click **Show** to view the service credentials.
+    - Copy the `apikey` value.
+    - Copy the `url` value.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Configuring the application
 
-### `npm test`
+1. In the application folder, copy the *.env.example* file and create a file called *.env*
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    ```
+    cp .env.example .env
+    ```
 
-### `npm run build`
+2. Open the *.env* file and add the service credentials that you obtained in the previous step.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Example *.env* file that configures the `apikey` and `url` for a Personality Insights service instance hosted in the US East region:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+    ```
+    PERSONALITY_INSIGHTS_IAM_APIKEY=X4rbi8vwZmKpXfowaS3GAsA7vdy17Qh7km5D6EzKLHL2
+    PERSONALITY_INSIGHTS_URL=https://gateway-wdc.watsonplatform.net/personality-insights/api
+    ```
+### Setting Up the Twitter Application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. [Create a Twitter application][create_twitter_app].
 
-### `npm run eject`
+2. Add your application's callback URL:
+  - For Bluemix environment: `<application-name>.mybluemix.net/auth/twitter/callback`
+  - For Local environment: `http://localhost:3000/auth/twitter/callback`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Update the `.env` file and add your twitter application credentials:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ```none
+  TWITTER_CONSUMER_KEY=<consumer-key>
+  TWITTER_CONSUMER_SECRET=<consumer-secret>
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Running locally
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Install the dependencies
 
-## Learn More
+    ```
+    npm install
+    ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Run the application
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    ```
+    npm start
+    ```
 
-### Code Splitting
+1. View the application in a browser at `localhost:3000`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Deploying to IBM Cloud as a Cloud Foundry Application
 
-### Analyzing the Bundle Size
+1. Login to IBM Cloud with the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/index.html#overview)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+    ```
+    ibmcloud login
+    ```
 
-### Making a Progressive Web App
+1. Target a Cloud Foundry organization and space.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+    ```
+    ibmcloud target --cf
+    ```
 
-### Advanced Configuration
+1. Edit the *manifest.yml* file. Change the **name** field to something unique.  
+  For example, `- name: my-app-name`.
+1. Deploy the application
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+    ```
+    ibmcloud app push
+    ```
 
-### Deployment
+1. View the application online at the app URL.  
+For example: https://my-app-name.mybluemix.net
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-### `npm run build` fails to minify
+## Directory structure
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```none
+.
+├── app.js                       // express entry point
+├── config                       // express configuration
+│   ├── error-handler.js
+│   ├── express.js
+│   ├── i18n.js
+│   ├── passport.js
+│   └── security.js
+├── helpers                      // utility modules
+│   ├── personality-insights.js
+│   └── twitter-helper.js
+├── i18n                         // internationalization
+│   ├── en.json
+│   ├── es.json
+│   └── ja.json
+├── manifest.yml
+├── package.json
+├── public
+│   ├── css
+│   ├── data                     // sample text and tweets
+│   ├── fonts
+│   ├── images
+│   └── js
+├── router.js                   // express routes
+├── server.js                   // application entry point
+├── test
+└── views                       // ejs views
+```
+
+## License
+
+This sample code is licensed under Apache 2.0.  
+Full license text is available in [LICENSE](LICENSE).
+
+## Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md).
+
+## Open Source @ IBM
+
+Find more open source projects on the
+[IBM Github Page](http://ibm.github.io/).
+
+[service_url]: https://www.ibm.com/watson/services/personality-insights/
+[create_twitter_app]: https://apps.twitter.com/app/new

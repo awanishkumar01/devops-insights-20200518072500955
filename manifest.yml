@@ -1,9 +1,7 @@
+---
 applications:
-- disk_quota: 1024M
-  name: demodoi
-  command: npx serve -s build
+- name: personality-insights-livedemo
+  command: npm start
   path: .
+  memory: 256M
   instances: 1
-  memory: 64M
-  env:
-    DIFF_ENV: testing
